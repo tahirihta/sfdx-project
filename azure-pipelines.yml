@@ -7,30 +7,57 @@ trigger:
 - main
 
 pool:
-  vmImage: 'ubuntu-16.04'
+  vmImage: 'ubuntu-latest'
 
 steps:
-- task: NodeTool@0 
+- task: sfpowerscript-installsfdx-task@5
+  displayName: Install SFDX
+
+- task: sfpowerscript-authenticateorg-task@7
+  displayName: Authenticate with DevHub
   inputs:
-    versionSpec: '8.x' # replace this value with the version that you need for your project
-- task: DownloadSecureFile@1
+    method: JWT
+    jwt_key_file: server.key
+    username: $(SalesforceUsername)
+    alias: DevHub
+    isdevhub: true
+    clientid: $(SalesforceClientId)
+    isTelemetryEnabled: true
+
+- task: sfpowerscript-authenticateorg-task@7
+  displayName: Authenticate with ScratchOrg
   inputs:
-    secureFile: "jwt.key"
-- script:
-    sudo npm install --global sfdx-cli
-  displayName: "Install Salesforce CLI"
-- script:
-    sudo sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY --username $USERNAME --setdefaultdevhubusername --setalias DevHub --jwtkeyfile $DOWNLOADSECUREFILE_SECUREFILEPATH
-  displayName: "Authorise Salesforce DevHub"
-- script:
-    sudo sfdx force:org:create -s -f config/project-scratch-def.json -a CI
-  displayName: "Create Scratch Org"
-- script:
-    sudo sfdx force:source:push
-  displayName: "Push Source to Scratch Org"
-- script:
-    sudo sfdx force:apex:test:run -l RunLocalTests
-  displayName: "Run Tests"
-- script:
-    sudo sfdx force:org:delete -u CI -p
-  displayName: "Delete Scratch Org"
+    method: JWT
+    jwt_key_file: server.key
+    username: $(ScratchOrgUsername)
+    alias: MyScratchOrg
+    isdevhub: false
+    clientid: $(SalesforceClientId)
+    isTelemetryEnabled: true
+
+- task: sfpowerscript-deploysourcetoorg-task@5
+  displayName: Deploy source to scratch org
+  inputs:
+    project_directory: src
+    target_org: MyScratchOrg
+    source_directory: 'force-app'
+    checkonly: false
+    wait_time: '20'
+    testlevel: 'NoTestRun'
+    isTelemetryEnabled: true
+
+- task: sfpowerscript-triggerapextest-task@3
+  displayName: Run Apex Unit Tests
+  inputs:
+    target_org: 'MyScratchOrg'
+    testlevel: 'RunLocalTests'
+    wait_time: '60'
+    synchronous: false
+    isTelemetryEnabled: true
+
+- task: sfpowerscript-validateapextestcoverage-task@2
+  displayName: Validate 90% Apex Test Code Coverage
+  inputs:
+    target_org: 'MyScratchOrg'
+    test_coverage: '90'
+    isTelemetryEnabled: true
