@@ -29,14 +29,14 @@ jobs:
       - name: Checkout rad-sfdx-cli-action
         uses: actions/checkout@v2
         with:
-          repository: htahiri/rad-sfdx-cli-action
+          repository: tahirihta/rad-sfdx-cli-action
           token: ${{ secrets.DEVOPS_TOKEN }}
           ref: main
           path: .github/actions/rad-sfdx-cli-action
       - name: Checkout rad-ci-action
         uses: actions/checkout@v2
         with:
-          repository: htahiri/rad-ci-action
+          repository: tahirihta/rad-ci-action
           token: ${{ secrets.DEVOPS_TOKEN }}
           ref: main
           path: .github/actions/rad-ci-action
@@ -73,3 +73,4 @@ jobs:
   #      run: |
   #        echo Add other actions to build,
   #        echo test, and deploy your project.
+
