@@ -99,16 +99,16 @@
                 <componentName>flexipage:tabset</componentName>
             </componentInstance>
         </itemInstances>
-        <mode>Replace</mode>
-        <name>main</name>
-        <type>Region</type>
-    </flexiPageRegions>
-    <flexiPageRegions>
         <itemInstances>
             <componentInstance>
                 <componentName>runtime_sales_activities:activityPanel</componentName>
             </componentInstance>
         </itemInstances>
+        <mode>Replace</mode>
+        <name>main</name>
+        <type>Region</type>
+    </flexiPageRegions>
+    <flexiPageRegions>
         <mode>Replace</mode>
         <name>activityTabContent</name>
         <type>Facet</type>
@@ -162,18 +162,6 @@
         <itemInstances>
             <componentInstance>
                 <componentInstanceProperties>
-                    <name>latField</name>
-                    <value>Location__Latitude__s</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>longField</name>
-                    <value>Location__Longitude__s</value>
-                </componentInstanceProperties>
-                <componentInstanceProperties>
-                    <name>titleField</name>
-                    <value>Name</value>
-                </componentInstanceProperties>
-                <componentName>RecordMap</componentName>
             </componentInstance>
         </itemInstances>
         <itemInstances>
