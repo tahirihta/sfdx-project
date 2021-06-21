@@ -3,5 +3,5 @@
 feature-chan-map
     <apiVersion>70.0</apiVersion>
 
-    <description>A Lightning Component Bundle</description>
+    <description>A Lightning Component Bundle-HTA</description>
 </AuraDefinitionBundle>
