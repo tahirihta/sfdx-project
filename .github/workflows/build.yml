@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2              
       - name: Write the token into a file
-        run: 'echo ${{ secrets.DEVHUB_TOKEN}} > token.txt'
+        run: 'echo ${{ secrets.AUTH_SECRET}} > token.txt'
       - name: Install Salesforce CLI
         run: |
           wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
